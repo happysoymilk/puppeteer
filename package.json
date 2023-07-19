@@ -1,0 +1,19 @@
+{
+  "name": "puppeteer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "destroy": "gcloud functions delete testscraper --gen2 --region=europe-west2",
+    "deploy": "gcloud functions deploy scraper --memory=1024M --gen2 --runtime=nodejs18  --source=. --entry-point=hello --trigger-http --allow-unauthenticated --region=europe-west2",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.0.0",
+    "@google-cloud/bigquery": "^6.2.1",
+    "puppeteer": "^20.8.2"
+  }
+}
