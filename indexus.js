@@ -31,8 +31,8 @@ const googlescrape = async (browser, product_to_search, today) => {
 			`https://www.google.com/search?tbm=shop&hl=en-US&psb=1&ved=2ahUKEwiUjd2ngZuAAxX_iX8EHWQ2CqUQu-kFegQIABAR&q=${product_to_search}&oq=${product_to_search}&gs_lcp=Cgtwcm9kdWN0cy1jYxADUABYAGAAaABwAHgAgAEAiAEAkgEAmAEA&sclient=products-cc`
 		),
 	]);
-	const html = await page.content();
-	console.log(html);
+	// const html = await page.content();
+	// console.log(html);
 
 	console.info(`[INFO]: Loaded search page for ${product_to_search}`);
 
@@ -91,6 +91,8 @@ const googlescrape = async (browser, product_to_search, today) => {
 					"Not provided",
 				date: today,
 			}));
+			// console.log(sponsor_products);
+			// console.log(organic_products);
 			return { sponsor: sponsor_products, organic: organic_products };
 		},
 		product_to_search,
@@ -138,16 +140,49 @@ const main = async (
 			const data = await googlescrape(browser, word, today);
 			const sponsor = data.sponsor;
 			const organic = data.organic;
-			rows_sponsor.push({
-				data: sponsor,
-				datasetId: datasetId,
-				tableId: tableId_sponsor,
-			});
-			rows_organic.push({
-				data: organic,
-				datasetId: datasetId,
-				tableId: tableId_organic,
-			});
+			// while (sponsor.length === 0 || organic.length === 0) {
+			// 	data = await googlescrape(browser, word, today);
+			// 	sponsor = data.sponsor;
+			// 	organic = data.organic;
+			// }
+			// if (sponsor === []) {
+			// 	sponsor = {
+			// 		productsearched: product_to_search,
+			// 		productname:
+			// 			"Not available",
+			// 		productprice:"Not available",
+			// 		company: "Not available",
+			// 		date: today,
+			// 	};
+			// }
+			// console.log(sponsor);
+			// console.log(typeof sponsor);
+			// console.log(organic);
+			// console.log(typeof organic);
+			if (sponsor.length !== 0) {
+				rows_sponsor.push({
+					data: sponsor,
+					datasetId: datasetId,
+					tableId: tableId_sponsor,
+				});
+			}
+			if (organic.length !== 0) {
+				rows_organic.push({
+					data: organic,
+					datasetId: datasetId,
+					tableId: tableId_organic,
+				});
+			}
+			// rows_sponsor.push({
+			// 	data: sponsor,
+			// 	datasetId: datasetId,
+			// 	tableId: tableId_sponsor,
+			// });
+			// rows_organic.push({
+			// 	data: organic,
+			// 	datasetId: datasetId,
+			// 	tableId: tableId_organic,
+			// });
 		}
 		await browser.close();
 		return { sponsor: rows_sponsor, organic: rows_organic };
@@ -221,25 +256,25 @@ functions.cloudEvent("helloPubSub", async (cloudEvent) => {
 		: "NodeJS18 UK scraper";
 
 	try {
-		// const keywords = [
-		// 	"photo blanket",
-		// 	"photo canvas",
-		// 	"photo book",
-		// 	"photo calendar",
-		// 	"personalised blanket",
-		// 	"photobook",
-		// 	"wedding photo book",
-		// 	"wedding book",
-		// 	"photo slate",
-		// 	"photo collage",
-		// 	"metal prints",
-		// 	"photo mug",
-		// 	"photo tiles",
-		// 	"greeting card",
-		// 	"photo puzzle",
-		// ];
+		const keywords = [
+			"photo blanket",
+			"photo canvas",
+			"photo book",
+			"photo calendar",
+			"personalised blanket",
+			"photobook",
+			"wedding photo book",
+			"wedding book",
+			"photo slate",
+			"photo collage",
+			"metal prints",
+			"photo mug",
+			"photo tiles",
+			"greeting card",
+			"photo puzzle",
+		];
 
-		const keywords = ["photo blanket", "photo book"];
+		// const keywords = ["photo blanket", "photo book"];
 		const count = await main(keywords);
 		console.log(
 			`Success! Uploaded ${count.sposnor} sposnor rows and ${count.organic} organic rows!`
