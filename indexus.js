@@ -1,7 +1,21 @@
 const functions = require("@google-cloud/functions-framework");
 
 const puppeteer = require("puppeteer");
-
+const PUPPETEER_OPTIONS = {
+	headless: "new",
+	args: [
+		"--disable-gpu",
+		"--disable-dev-shm-usage",
+		"--disable-setuid-sandbox",
+		"--no-first-run",
+		"--no-sandbox",
+		"--no-zygote",
+		"--single-process",
+		"--proxy-server='direct://'",
+		"--proxy-bypass-list=*",
+		"--deterministic-fetch",
+	],
+};
 const wait = (ms) => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
@@ -133,7 +147,7 @@ const main = async (
 	const bigquery = new BigQuery();
 
 	async function scrape() {
-		const browser = await puppeteer.launch({ headless: "new" });
+		const browser = await puppeteer.launch({ PUPPETEER_OPTIONS });
 		const rows_sponsor = [];
 		const rows_organic = [];
 		for (word of keywords) {
@@ -266,12 +280,15 @@ functions.cloudEvent("helloPubSub", async (cloudEvent) => {
 			"wedding photo book",
 			"wedding book",
 			"photo slate",
-			"photo collage",
 			"metal prints",
 			"photo mug",
 			"photo tiles",
 			"greeting card",
 			"photo puzzle",
+			"photo pillow",
+			"canvas prints",
+			"canvas photo prints",
+			"cheap canvas prints",
 		];
 
 		// const keywords = ["photo blanket", "photo book"];

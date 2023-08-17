@@ -114,7 +114,7 @@ const withRetries = async (scrapingFn, retries) => {
 		}
 	}
 
-	throw new Error("Failed to scrape 10 times... aborting. Errors::" + errors);
+	throw new Error("Failed to scrape 15 times... aborting. Errors::" + errors);
 };
 
 const main = async (
@@ -166,7 +166,7 @@ const main = async (
 	}
 	// [END bigquery_table_insert_rows]
 
-	const data = await withRetries(scrape, 10);
+	const data = await withRetries(scrape, 15);
 	const sponsorRow = data.sponsor;
 	const organicRow = data.organic;
 	const count = await insertRowsAsStream(sponsorRow);
@@ -254,6 +254,11 @@ functions.cloudEvent("helloPubSub", async (cloudEvent) => {
 			"photo tiles",
 			"greeting card",
 			"photo puzzle",
+			"photo cushion",
+			"framed photo",
+			"photo album book",
+			"personalised photo album",
+			"photobooks",
 		];
 		// const keyword = ['photo blanket','canvas','photo book','photo calendar','personalised blanket','photobook','wedding photo book','wedding book','photo slate','photo collage','metal prints','photo mug',
 		// 'photo tiles','greeting card','photo puzzle'];
